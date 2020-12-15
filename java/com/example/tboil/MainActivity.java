@@ -40,10 +40,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Intent events = new Intent(MainActivity.this, eventsClass.class);
                 startActivity(events);
                 break;
-//            case R.id.check_visit_btn:
-//                Intent checkVisitors = new Intent(MainActivity.this, checkVisitClass.class);
-//                startActivity(checkVisitors);
-//                break;
+            case R.id.check_visit_btn:
+                Intent checkVisitors = new Intent(MainActivity.this, checkVisitClass.class);
+                startActivity(checkVisitors);
+                break;
         }
     }
 }

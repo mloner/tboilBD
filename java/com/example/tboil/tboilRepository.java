@@ -43,42 +43,28 @@ public class tboilRepository {
         return result;
     }
 
-    public List<eventVisitors> getVisitorsByShcheduleEvent(String _id) {
-        List<eventVisitors> result = new ArrayList<eventVisitors>();
-        databaseHelper.create_db();
-        db = databaseHelper.open();
-        try {
-            cursor = db.rawQuery("select " +
-                    "schedule_records.id, " +
-                    "persons.fio, " +
-                    "is_visited " +
-                    "from " +
-                    "schedule_records " +
-                    "inner join " +
-                    "persons on persons.id = person_id " +
-                    "where event_id = "+  _id +";", null);
-        }catch (Exception ex){
-        }
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast()) {
-            String id = cursor.getString(cursor.getColumnIndex("id"));
-            String fio = cursor.getString(cursor.getColumnIndex("fio"));
-            String isVisited = cursor.getString(cursor.getColumnIndex("is_visited"));
-            result.add(new eventVisitors(id, fio, isVisited));
-            cursor.moveToNext();
-        }
-        cursor.close();
-        db.close();
-        return result;
-    }
-
-    public void changeVisitedById(String id, boolean state){
-        databaseHelper.create_db();
-        db = databaseHelper.open();
-        String crt_table_sql = "UPDATE " +
-                "schedule_records " +
-                "SET is_visited = '"+state+"' " +
-                "where schedule_records.id = "+ id +";";
-        db.execSQL(crt_table_sql);
+    public List<eventsScheduleItem> getVisitorsByShcheduleEvent() {
+        return new ArrayList<>();
+        //доделать
+//        List<eventsScheduleItem> result = new ArrayList<eventsScheduleItem>();
+//        databaseHelper.create_db();
+//        db = databaseHelper.open();
+//        try {
+//            cursor = db.rawQuery("select * from `eventsschedule`;", null);
+//        }catch (Exception ex){
+//            int ff =12;
+//        }
+//        cursor.moveToFirst();
+//        while (!cursor.isAfterLast()) {
+//            String eventName = cursor.getString(cursor.getColumnIndex("eventName"));
+//            String hallName = cursor.getString(cursor.getColumnIndex("hallName"));
+//            String start_datetime = cursor.getString(cursor.getColumnIndex("start_datetime"));
+//            String durationMins = cursor.getString(cursor.getColumnIndex("durationMins"));
+//            result.add(new eventsScheduleItem(eventName, hallName, start_datetime, durationMins));
+//            cursor.moveToNext();
+//        }
+//        cursor.close();
+//        db.close();
+//        return result;
     }
 }

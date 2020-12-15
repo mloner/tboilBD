@@ -1,6 +1,5 @@
 package com.example.tboil;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -35,7 +34,7 @@ public class eventsClass extends AppCompatActivity implements View.OnClickListen
     }
 
     public void eventsScheduleTableRequest(){
-        final List<eventsScheduleItem> eventsSchedule = rep.getEventsSchedule();
+        List<eventsScheduleItem> eventsSchedule = rep.getEventsSchedule();
         table = findViewById(R.id.table);
 
         for (eventsScheduleItem item:  eventsSchedule) {
@@ -48,9 +47,9 @@ public class eventsClass extends AppCompatActivity implements View.OnClickListen
                 public void onClick(View v) {
                     TextView id = (TextView)v.findViewById(R.id.id);
                     String _id = id.getText().toString();
-                    Intent checkVisitors = new Intent(eventsClass.this, checkVisitClass.class);
-                    checkVisitors.putExtra("eventId", _id);
-                    startActivity(checkVisitors);
+//                    Toast toast = Toast.makeText(getApplicationContext(),
+//                            _id, Toast.LENGTH_SHORT);
+//                    toast.show();
                 }
             });
 
