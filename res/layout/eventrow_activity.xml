@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="392dp"
+    android:layout_height="match_parent"
+    android:background="@drawable/border"
+    android:id="@+id/row">
+    <TableRow>
+
+        <TextView
+            android:id="@+id/startDateTime"
+            android:layout_height="wrap_content"
+            android:textSize="20dp"/>
+
+    </TableRow>
+    <TableRow>
+        <TextView
+            android:id="@+id/eventName"
+            android:scrollHorizontally="false"
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:textSize="25dp"
+            />
+    </TableRow>
+    <TableRow>
+        <TextView
+            android:id="@+id/hallName"
+            android:layout_width="100dp"
+            android:layout_height="30dp" />
+        <TextView
+            android:id="@+id/id"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:visibility="invisible"/>
+    </TableRow>
+
+</TableLayout>
