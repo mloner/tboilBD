@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -14,19 +16,28 @@ import com.example.tboil.tboilModels.eventsScheduleItem;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import com.example.tboil.tboilModels.*;
 
 public class checkVisitClass extends AppCompatActivity implements View.OnClickListener {
     String Request;
     static TableLayout table;
 
     private tboilRepository rep;
+    private boolean update;
+    private ArrayList<TableRow> rows;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.check_visit_activity);
+        try {
+            setContentView(R.layout.check_visit_activity);
+        }catch (Exception ex){
+
+
+        }
         //databaseHelper = new DatabaseHelper(getApplicationContext());
         // создаем базу данных
         rep = new tboilRepository();
@@ -41,36 +52,70 @@ public class checkVisitClass extends AppCompatActivity implements View.OnClickLi
 
     }
     public void CheckVisitTableRequest(){
-        List<eventsScheduleItem> eventsSchedule = rep.getEventsSchedule();
         table = findViewById(R.id.table);
+        //remove rows
+        if(rows != null) {
+            ArrayList<TableRow> removeRows = new ArrayList<>();
+            for(int i = 0; i < rows.size(); i++) {
+             removeRows.add(rows.get(i));
+            }
 
-        for (eventsScheduleItem item:  eventsSchedule) {
+// now delete those rows
+            for(TableRow remove : removeRows) {
+                table.removeView(remove);
+                //rows.remove(remove);
+            }
+        }
+        rows = new ArrayList<TableRow>();
+        String __id = getIntent().getStringExtra("eventId");
+        List<eventVisitors> eventVisitorsItems = rep.getVisitorsByShcheduleEvent(__id);
+
+        update = true;
+        for (eventVisitors item: eventVisitorsItems) {
             TableRow tr = new TableRow(this);
+            rows.add(tr);
             tr.setBackgroundColor(Color.WHITE);
 
-            View v = LayoutInflater.from(this).inflate(R.layout.eventrow_activity, tr, false);
+            View v = LayoutInflater.from(this).inflate(R.layout.visitorsrow_activity, tr, false);
 
             TextView id = (TextView)v.findViewById(R.id.id);
             id.setText(item.id);
 
-            TextView eventName = (TextView)v.findViewById(R.id.eventName);
-            eventName.setText(item.eventName);
+            TextView fio = (TextView)v.findViewById(R.id.fio);
+            fio.setText(item.fio);
 
-            TextView hallName = (TextView)v.findViewById(R.id.hallName);
-            hallName.setText(item.hallName);
+            CheckBox isVisited = (CheckBox)v.findViewById(R.id.isvisited);
+            String kek = item.isVisited.toString();
+            boolean state;
+            try{
+                int int_state = Integer.parseInt(kek);
+                if(int_state == 1)
+                    state = true;
+                else
+                    state = false;
+            }catch (Exception ex){
+                state = Boolean.parseBoolean(kek);
+            }
+            isVisited.setChecked(state);
+            v.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (update) return;
+                    TextView id = (TextView)view.findViewById(R.id.id);
+                    String _id = id.getText().toString();
 
-            TextView startDatetime = (TextView)v.findViewById(R.id.startDateTime);
-            try {
-                DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm");
-                Date date = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(item.start_datetime);
-                startDatetime.setText(dateFormat.format(date) + " (" + item.durationMins + " мин)");
-            }catch (Exception ex){}
+                    CheckBox state = (CheckBox)view.findViewById(R.id.isvisited);
+                    boolean _state = state.isChecked();
 
+                    rep.changeVisitedById(_id, !_state);
+                    CheckVisitTableRequest();
+                }
+            });
             tr.addView(v);
 
             table.addView(tr);
-            table.findViewById(R.id.events_btn);
         }
+        update = false;
     }
 
 

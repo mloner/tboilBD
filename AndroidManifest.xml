@@ -22,6 +22,11 @@
             >
         </activity>
 
+        <activity android:name="com.example.tboil.checkVisitClass"
+            android:label="Отметки"
+            >
+        </activity>
+
     </application>
 
 </manifest>

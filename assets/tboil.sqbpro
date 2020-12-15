@@ -1,16 +1,10 @@
-<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="C:/Users/Nikita/Downloads/kal/tboil/app/src/main/assets/tboil.db" readonly="0" foreign_keys="1" case_sensitive_like="0" temp_store="0" wal_autocheckpoint="1000" synchronous="2"/><attached/><window><main_tabs open="structure browser pragmas query" current="1"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="125"/><column_width id="3" width="6562"/><column_width id="4" width="0"/><expanded_item id="0" parent="1"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/></tab_structure><tab_browse><current_table name="4,14:maineventsschedule"/><default_encoding codec=""/><browse_table_settings><table schema="main" name="eventsschedule" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="300"/><column index="2" value="100"/><column index="3" value="160"/><column index="4" value="112"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table></browse_table_settings></tab_browse><tab_sql><sql name="SQL 1"></sql><sql name="Edit View eventsschedule">DROP VIEW &quot;main&quot;.&quot;eventsschedule&quot;;
-CREATE VIEW 'eventsschedule' AS
-SELECT 
-		`events_schedule`.`id` AS `id`,
-        `events`.`name` AS `eventName`,
-        `event_halls`.`name` AS `hallName`,
-        `events_schedule`.`start_datetime` AS `start_datetime`,
-        Cast ((
-    JulianDay(end_datetime) - JulianDay(start_datetime)
-) * 24 * 60 As Integer) as `durationMins`
-    FROM
-        ((((`events_schedule`
-        JOIN `events` ON ((`events`.`id` = `events_schedule`.`event_id`)))
-        JOIN `event_formats` ON ((`event_formats`.`id` = `events_schedule`.`event_format_id`)))
-        JOIN `event_halls` ON ((`event_halls`.`id` = `events_schedule`.`event_hall_id`)))
-        JOIN `event_access_types` ON ((`event_access_types`.`id` = `events_schedule`.`event_access_type_id`)))</sql><current_tab id="1"/></tab_sql></sqlb_project>
+<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="C:/Users/Nikita/Downloads/kal/tboil/app/src/main/assets/tboil.db" readonly="0" foreign_keys="1" case_sensitive_like="0" temp_store="0" wal_autocheckpoint="1000" synchronous="2"/><attached/><window><main_tabs open="structure browser pragmas query" current="3"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="125"/><column_width id="3" width="6562"/><column_width id="4" width="0"/><expanded_item id="0" parent="1"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/></tab_structure><tab_browse><current_table name="4,15:mainadmins_schedule"/><default_encoding codec=""/><browse_table_settings><table schema="main" name="admins_schedule" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="54"/><column index="2" value="83"/><column index="3" value="158"/><column index="4" value="160"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table></browse_table_settings></tab_browse><tab_sql><sql name="SQL 1">select
+schedule_records.id,
+event_id,
+	persons.fio,
+	is_visited
+from schedule_records
+
+inner join persons on persons.id = person_id
+where event_id = 43
+</sql><current_tab id="0"/></tab_sql></sqlb_project>

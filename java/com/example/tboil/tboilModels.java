@@ -16,4 +16,15 @@ public class tboilModels {
             this.durationMins = durationMins;
         }
     }
+    public static class eventVisitors{
+        public String id;
+        public String fio;
+        public String isVisited;
+
+        public eventVisitors(String id, String fio, String isVisited) {
+            this.id = id;
+            this.fio = fio;
+            this.isVisited = isVisited;
+        }
+    }
 }
