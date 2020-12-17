@@ -28,8 +28,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         ScheduleRequestButton = findViewById(R.id.events_btn);
         ScheduleRequestButton.setOnClickListener(this);
-        CheckVisitButton = findViewById(R.id.check_visit_btn);
-        CheckVisitButton.setOnClickListener(this);
+        //CheckVisitButton = findViewById(R.id.chec);
+        //CheckVisitButton.setOnClickListener(this);
     }
 
 

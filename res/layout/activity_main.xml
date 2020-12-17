@@ -16,15 +16,5 @@
         android:text="Расписание"
         android:id="@+id/events_btn"
         />
-
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Отметки о посещении"
-            android:id="@+id/check_visit_btn"
-            android:visibility="invisible"/>
-
-
-
     </LinearLayout>
 </ScrollView>

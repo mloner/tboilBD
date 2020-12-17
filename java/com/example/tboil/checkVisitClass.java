@@ -34,12 +34,7 @@ public class checkVisitClass extends AppCompatActivity implements View.OnClickLi
         super.onCreate(savedInstanceState);
         try {
             setContentView(R.layout.check_visit_activity);
-        }catch (Exception ex){
-
-
-        }
-        //databaseHelper = new DatabaseHelper(getApplicationContext());
-        // создаем базу данных
+        }catch (Exception ex){ }
         rep = new tboilRepository();
         rep.init(getApplicationContext());
 
@@ -109,6 +104,19 @@ public class checkVisitClass extends AppCompatActivity implements View.OnClickLi
 
                     rep.changeVisitedById(_id, !_state);
                     CheckVisitTableRequest();
+                }
+            });
+
+            v.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    if (update) return true;
+                    TextView id = (TextView)view.findViewById(R.id.id);
+                    String _id = id.getText().toString();
+
+                    rep.deleteVisit(_id);
+                    CheckVisitTableRequest();
+                    return true;
                 }
             });
             tr.addView(v);

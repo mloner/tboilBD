@@ -43,6 +43,7 @@ public class eventsClass extends AppCompatActivity implements View.OnClickListen
             tr.setBackgroundColor(Color.WHITE);
 
             View v = LayoutInflater.from(this).inflate(R.layout.eventrow_activity, tr, false);
+
             v.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -53,6 +54,8 @@ public class eventsClass extends AppCompatActivity implements View.OnClickListen
                     startActivity(checkVisitors);
                 }
             });
+
+
 
             TextView id = (TextView)v.findViewById(R.id.id);
             id.setText(item.id);
