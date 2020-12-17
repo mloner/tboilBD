@@ -5,8 +5,11 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -28,6 +31,10 @@ public class checkVisitClass extends AppCompatActivity implements View.OnClickLi
     private tboilRepository rep;
     private boolean update;
     private ArrayList<TableRow> rows;
+    private String __id;
+    private List<eventVisitors> eventVisitorsItems;
+
+    private Button addVisitButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,11 +47,30 @@ public class checkVisitClass extends AppCompatActivity implements View.OnClickLi
 
 
         CheckVisitTableRequest();
+        fillFiosList();
 
+        addVisitButton = (Button)findViewById(R.id.addVisitButton);
+        addVisitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Spinner fio = (Spinner) findViewById(R.id.fios);
+                String _fio = fio.getSelectedItem().toString();
+
+
+                rep.addVisit(__id, _fio);
+                CheckVisitTableRequest();
+                fillFiosList();
+            }
+        });
     }
-    public void kek(View v) {
 
-
+    private void fillFiosList(){
+        List<String> lst = rep.dropDownFios(__id);
+        Spinner dropdown = findViewById(R.id.fios);
+        String[] items = lst.toArray(new String[0]);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_spinner_dropdown_item, items);
+        dropdown.setAdapter(adapter);
     }
     public void CheckVisitTableRequest(){
         table = findViewById(R.id.table);
@@ -55,15 +81,13 @@ public class checkVisitClass extends AppCompatActivity implements View.OnClickLi
              removeRows.add(rows.get(i));
             }
 
-// now delete those rows
             for(TableRow remove : removeRows) {
                 table.removeView(remove);
-                //rows.remove(remove);
             }
         }
         rows = new ArrayList<TableRow>();
-        String __id = getIntent().getStringExtra("eventId");
-        List<eventVisitors> eventVisitorsItems = rep.getVisitorsByShcheduleEvent(__id);
+        __id = getIntent().getStringExtra("eventId");
+        eventVisitorsItems = rep.getVisitorsByShcheduleEvent(__id);
 
         update = true;
         for (eventVisitors item: eventVisitorsItems) {
@@ -104,6 +128,7 @@ public class checkVisitClass extends AppCompatActivity implements View.OnClickLi
 
                     rep.changeVisitedById(_id, !_state);
                     CheckVisitTableRequest();
+                    //fillFiosList();
                 }
             });
 
@@ -116,6 +141,7 @@ public class checkVisitClass extends AppCompatActivity implements View.OnClickLi
 
                     rep.deleteVisit(_id);
                     CheckVisitTableRequest();
+                    fillFiosList();
                     return true;
                 }
             });

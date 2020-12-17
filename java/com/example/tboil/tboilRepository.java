@@ -91,4 +91,44 @@ public class tboilRepository {
                 "where schedule_records.id = "+ id +";";
         db.execSQL(crt_table_sql);
     }
+    public List<String> dropDownFios(String event_id){
+        List<String> result = new ArrayList<String>();
+        databaseHelper.create_db();
+        db = databaseHelper.open();
+        String crt_table_sql = "select " +
+                "fio " +
+                "from " +
+                "persons " +
+                "where " +
+                "id not in ( " +
+                "select " +
+                "person_id " +
+                "FROM " +
+                "schedule_records " +
+                "where " +
+                "event_id = "+ event_id +" " +
+                ");";
+        try {
+            cursor = db.rawQuery(crt_table_sql, null);
+        }catch (Exception ex){
+        }
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            String fio = cursor.getString(cursor.getColumnIndex("fio"));
+            result.add(fio);
+            cursor.moveToNext();
+        }
+        cursor.close();
+        db.close();
+        return result;
+    }
+
+    public void addVisit(String event_id, String person_fio){
+        databaseHelper.create_db();
+        db = databaseHelper.open();
+        String crt_table_sql = "INSERT INTO " +
+                "schedule_records (event_id, is_visited, person_id) " +
+                "VALUES("+event_id+", 'false', (select id from persons where fio = '"+person_fio+"'));";
+        db.execSQL(crt_table_sql);
+    }
 }
