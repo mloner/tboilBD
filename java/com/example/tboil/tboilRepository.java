@@ -2,6 +2,7 @@ package com.example.tboil;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.widget.Toast;
 
 import com.example.tboil.tboilModels.*;
 
@@ -73,7 +74,7 @@ public class tboilRepository {
         return result;
     }
 
-    public void changeVisitedById(String id, boolean state){
+    public void changeVisitedById(String id, boolean state, Context ctx){
         databaseHelper.create_db();
         db = databaseHelper.open();
         String crt_table_sql = "UPDATE " +
@@ -81,15 +82,21 @@ public class tboilRepository {
                 "SET is_visited = '"+state+"' " +
                 "where schedule_records.id = "+ id +";";
         db.execSQL(crt_table_sql);
+        Toast toast = Toast.makeText(ctx,
+                "Запись изменена", Toast.LENGTH_SHORT);
+        toast.show();
     }
 
-    public void deleteVisit(String id){
+    public void deleteVisit(String id, Context ctx){
         databaseHelper.create_db();
         db = databaseHelper.open();
         String crt_table_sql = "DELETE " +
                 "from schedule_records " +
                 "where schedule_records.id = "+ id +";";
         db.execSQL(crt_table_sql);
+        Toast toast = Toast.makeText(ctx,
+                "Посетитель удален", Toast.LENGTH_SHORT);
+        toast.show();
     }
     public List<String> dropDownFios(String event_id){
         List<String> result = new ArrayList<String>();
@@ -123,12 +130,15 @@ public class tboilRepository {
         return result;
     }
 
-    public void addVisit(String event_id, String person_fio){
+    public void addVisit(String event_id, String person_fio, Context ctx){
         databaseHelper.create_db();
         db = databaseHelper.open();
         String crt_table_sql = "INSERT INTO " +
                 "schedule_records (event_id, is_visited, person_id) " +
                 "VALUES("+event_id+", 'false', (select id from persons where fio = '"+person_fio+"'));";
         db.execSQL(crt_table_sql);
+        Toast toast = Toast.makeText(ctx,
+                "Посетитель добавлен", Toast.LENGTH_SHORT);
+        toast.show();
     }
 }

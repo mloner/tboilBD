@@ -57,7 +57,7 @@ public class checkVisitClass extends AppCompatActivity implements View.OnClickLi
                 String _fio = fio.getSelectedItem().toString();
 
 
-                rep.addVisit(__id, _fio);
+                rep.addVisit(__id, _fio, getApplicationContext());
                 CheckVisitTableRequest();
                 fillFiosList();
             }
@@ -126,7 +126,7 @@ public class checkVisitClass extends AppCompatActivity implements View.OnClickLi
                     CheckBox state = (CheckBox)view.findViewById(R.id.isvisited);
                     boolean _state = state.isChecked();
 
-                    rep.changeVisitedById(_id, !_state);
+                    rep.changeVisitedById(_id, !_state, getApplicationContext());
                     CheckVisitTableRequest();
                     //fillFiosList();
                 }
@@ -139,7 +139,7 @@ public class checkVisitClass extends AppCompatActivity implements View.OnClickLi
                     TextView id = (TextView)view.findViewById(R.id.id);
                     String _id = id.getText().toString();
 
-                    rep.deleteVisit(_id);
+                    rep.deleteVisit(_id, getApplicationContext());
                     CheckVisitTableRequest();
                     fillFiosList();
                     return true;
