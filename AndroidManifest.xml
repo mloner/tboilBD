@@ -9,7 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="com.example.tboil.MainActivity">
+        <activity android:name="com.example.tboil.Views.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -17,12 +17,12 @@
             </intent-filter>
         </activity>
 
-        <activity android:name="com.example.tboil.eventsClass"
+        <activity android:name="com.example.tboil.Views.scheduleEventsClass"
             android:label="Расписание"
             >
         </activity>
 
-        <activity android:name="com.example.tboil.checkVisitClass"
+        <activity android:name="com.example.tboil.Views.checkVisitClass"
             android:label="Отметки"
             >
         </activity>

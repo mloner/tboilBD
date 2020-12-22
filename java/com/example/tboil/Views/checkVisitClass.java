@@ -1,4 +1,4 @@
-package com.example.tboil;
+package com.example.tboil.Views;
 
 import android.graphics.Color;
 import android.os.Bundle;
@@ -8,21 +8,18 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.tboil.tboilModels.eventsScheduleItem;
-
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import com.example.tboil.tboilModels.*;
+
+import com.example.tboil.Models.eventVisitorsModel;
+import com.example.tboil.R;
+import com.example.tboil.Repos.tboilRepository;
 
 public class checkVisitClass extends AppCompatActivity implements View.OnClickListener {
     String Request;
@@ -32,7 +29,7 @@ public class checkVisitClass extends AppCompatActivity implements View.OnClickLi
     private boolean update;
     private ArrayList<TableRow> rows;
     private String __id;
-    private List<eventVisitors> eventVisitorsItems;
+    private List<eventVisitorsModel> eventVisitorsItems;
 
     private Button addVisitButton;
 
@@ -40,8 +37,10 @@ public class checkVisitClass extends AppCompatActivity implements View.OnClickLi
     protected void onCreate(Bundle savedInstanceState) {
         try {super.onCreate(savedInstanceState);
 
-            setContentView(R.layout.check_visit_activity);
-        }catch (Exception ex){ }
+            setContentView(R.layout.activity_check_visit_main);
+        }catch (Exception ex){
+            int f = 123;
+        }
         rep = new tboilRepository();
         rep.init(getApplicationContext());
 
@@ -51,7 +50,7 @@ public class checkVisitClass extends AppCompatActivity implements View.OnClickLi
 
         //get event name
         String name = getIntent().getStringExtra("eventName");
-
+        setTitle(name);
         addVisitButton = (Button)findViewById(R.id.addVisitButton);
         addVisitButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,7 +59,15 @@ public class checkVisitClass extends AppCompatActivity implements View.OnClickLi
                 String _fio = fio.getSelectedItem().toString();
 
 
-                rep.addVisit(__id, _fio, getApplicationContext());
+                if(rep.addVisit(__id, _fio)){
+                    Toast toast = Toast.makeText(getApplicationContext(),
+                            "Посетитель добавлен", Toast.LENGTH_SHORT);
+                    toast.show();
+                }else{
+                    Toast toast = Toast.makeText(getApplicationContext(),
+                            "Что-то пошло не так", Toast.LENGTH_SHORT);
+                    toast.show();
+                }
                 CheckVisitTableRequest();
                 fillFiosList();
             }
@@ -68,7 +75,7 @@ public class checkVisitClass extends AppCompatActivity implements View.OnClickLi
     }
 
     private void fillFiosList(){
-        List<String> lst = rep.dropDownFios(__id);
+        List<String> lst = rep.getNonVisitorsFiosByEventid(__id);
         Spinner dropdown = findViewById(R.id.fios);
         String[] items = lst.toArray(new String[0]);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
@@ -95,12 +102,12 @@ public class checkVisitClass extends AppCompatActivity implements View.OnClickLi
 
         int visitedCount = 0;
         update = true;
-        for (eventVisitors item: eventVisitorsItems) {
+        for (eventVisitorsModel item: eventVisitorsItems) {
             TableRow tr = new TableRow(this);
             rows.add(tr);
             tr.setBackgroundColor(Color.WHITE);
 
-            View v = LayoutInflater.from(this).inflate(R.layout.visitorsrow_activity, tr, false);
+            View v = LayoutInflater.from(this).inflate(R.layout.activity_check_visit_row, tr, false);
 
             TextView id = (TextView)v.findViewById(R.id.id);
             id.setText(item.id);
@@ -134,9 +141,17 @@ public class checkVisitClass extends AppCompatActivity implements View.OnClickLi
                     CheckBox state = (CheckBox)view.findViewById(R.id.isvisited);
                     boolean _state = state.isChecked();
 
-                    rep.changeVisitedById(_id, !_state, getApplicationContext());
+                    if(rep.changeVisitedById(_id, !_state)){
+                        Toast toast = Toast.makeText(getApplicationContext(),
+                                "Запись изменена", Toast.LENGTH_SHORT);
+                        toast.show();
+                    }
+                    else{
+                        Toast toast = Toast.makeText(getApplicationContext(),
+                                "Что-то пошло не так", Toast.LENGTH_SHORT);
+                        toast.show();
+                    }
                     CheckVisitTableRequest();
-                    //fillFiosList();
                 }
             });
 
@@ -147,7 +162,15 @@ public class checkVisitClass extends AppCompatActivity implements View.OnClickLi
                     TextView id = (TextView)view.findViewById(R.id.id);
                     String _id = id.getText().toString();
 
-                    rep.deleteVisit(_id, getApplicationContext());
+                    if(rep.deleteVisit(_id)){
+                        Toast toast = Toast.makeText(getApplicationContext(),
+                                "Посетитель удален", Toast.LENGTH_SHORT);
+                        toast.show();
+                    }else{
+                        Toast toast = Toast.makeText(getApplicationContext(),
+                                "Что-то пошло не так", Toast.LENGTH_SHORT);
+                        toast.show();
+                    }
                     CheckVisitTableRequest();
                     fillFiosList();
                     return true;

@@ -1,4 +1,4 @@
-package com.example.tboil;
+package com.example.tboil.DBTools;
 
 import android.database.SQLException;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -12,13 +12,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-class DatabaseHelper extends SQLiteOpenHelper {
+public class DatabaseHelper extends SQLiteOpenHelper {
     private static String DB_PATH; // полный путь к базе данных
     private static String DB_NAME = "tboil.db";
     private static final int SCHEMA = 1; // версия базы данных
     private Context myContext;
 
-    DatabaseHelper(Context context) {
+    public DatabaseHelper(Context context) {
         super(context, DB_NAME, null, SCHEMA);
         this.myContext=context;
         DB_PATH =context.getFilesDir().getPath() + DB_NAME;
@@ -31,7 +31,7 @@ class DatabaseHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion,  int newVersion) {
     }
 
-    void create_db(){
+    public void create_db(){
         InputStream myInput = null;
         OutputStream myOutput = null;
         try {

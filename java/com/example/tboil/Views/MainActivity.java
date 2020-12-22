@@ -1,10 +1,13 @@
-package com.example.tboil;
+package com.example.tboil.Views;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+
+import com.example.tboil.DBTools.DatabaseHelper;
+import com.example.tboil.R;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -37,7 +40,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.events_btn:
-                Intent events = new Intent(MainActivity.this, eventsClass.class);
+                Intent events = new Intent(MainActivity.this, scheduleEventsClass.class);
                 startActivity(events);
                 break;
 //            case R.id.check_visit_btn:
