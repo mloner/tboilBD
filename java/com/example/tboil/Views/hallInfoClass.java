@@ -50,7 +50,7 @@ public class hallInfoClass extends AppCompatActivity implements View.OnClickList
             avgEventsCountPerDay.setText("Среднее кол-во мероприятий в день: " + hallInfo.avgEventsCountPerDay);
 
             TextView placeInTop = findViewById(R.id.placeInTop);
-            placeInTop.setText("Место в топе залов: " + hallInfo.placeInTop+1);
+            placeInTop.setText("Место в топе залов: " + Integer.parseInt(hallInfo.placeInTop)+1);
 
             TextView top5Tematics = findViewById(R.id.top5Tematics);
             top5Tematics.setText("Топ 5 тематик в зале: " + String.join(", ", hallInfo.top5Tematics));
