@@ -38,8 +38,8 @@ public class checkVisitClass extends AppCompatActivity implements View.OnClickLi
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        try {
+        try {super.onCreate(savedInstanceState);
+
             setContentView(R.layout.check_visit_activity);
         }catch (Exception ex){ }
         rep = new tboilRepository();
@@ -89,6 +89,8 @@ public class checkVisitClass extends AppCompatActivity implements View.OnClickLi
         __id = getIntent().getStringExtra("eventId");
         eventVisitorsItems = rep.getVisitorsByShcheduleEvent(__id);
 
+
+        int visitedCount = 0;
         update = true;
         for (eventVisitors item: eventVisitorsItems) {
             TableRow tr = new TableRow(this);
@@ -114,6 +116,9 @@ public class checkVisitClass extends AppCompatActivity implements View.OnClickLi
                     state = false;
             }catch (Exception ex){
                 state = Boolean.parseBoolean(kek);
+            }
+            if(state){
+                visitedCount++;
             }
             isVisited.setChecked(state);
             v.setOnClickListener(new View.OnClickListener() {
@@ -149,6 +154,10 @@ public class checkVisitClass extends AppCompatActivity implements View.OnClickLi
 
             table.addView(tr);
         }
+        //update total people count
+        TextView tv = findViewById(R.id.totalPeopleCount);
+        tv.setText("Пришло " + visitedCount + " из "  + eventVisitorsItems.size());
+
         update = false;
     }
 
