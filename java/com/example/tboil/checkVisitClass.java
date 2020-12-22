@@ -49,6 +49,9 @@ public class checkVisitClass extends AppCompatActivity implements View.OnClickLi
         CheckVisitTableRequest();
         fillFiosList();
 
+        //get event name
+        String name = getIntent().getStringExtra("eventName");
+
         addVisitButton = (Button)findViewById(R.id.addVisitButton);
         addVisitButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -156,7 +159,7 @@ public class checkVisitClass extends AppCompatActivity implements View.OnClickLi
         }
         //update total people count
         TextView tv = findViewById(R.id.totalPeopleCount);
-        tv.setText("Пришло " + visitedCount + " из "  + eventVisitorsItems.size());
+        tv.setText("Пришло " + visitedCount + " из "  + rep.getVisitorsCountByEventId(__id));
 
         update = false;
     }

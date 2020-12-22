@@ -18,6 +18,33 @@ public class tboilRepository {
     public void init(Context ctx){
         databaseHelper = new DatabaseHelper(ctx);
     }
+
+    public String getVisitorsCountByEventId(String eventId){
+        String result;
+        databaseHelper.create_db();
+        db = databaseHelper.open();
+        try {
+            cursor = db.rawQuery("select " +
+                    "COUNT(schedule_records.id) " +
+                    "from " +
+                    "schedule_records " +
+                    "inner join " +
+                    "persons on persons.id = person_id " +
+                    "where event_id = "+  eventId +";", null);
+        }catch (Exception ex){
+        }
+        cursor.moveToFirst();
+        String id = "0";
+        try {
+            id = cursor.getString(0);
+        }catch (Exception ex){
+            int d = 3;
+        }
+        cursor.close();
+        db.close();
+        return id;
+    }
+
     public List<eventsScheduleItem> getEventsSchedule() {
         List<eventsScheduleItem> result = new ArrayList<eventsScheduleItem>();
         databaseHelper.create_db();

@@ -49,8 +49,13 @@ public class eventsClass extends AppCompatActivity implements View.OnClickListen
                 public void onClick(View v) {
                     TextView id = (TextView)v.findViewById(R.id.id);
                     String _id = id.getText().toString();
+
+                    TextView name = (TextView)v.findViewById(R.id.eventName);
+                    String _name = name.getText().toString();
+
                     Intent checkVisitors = new Intent(eventsClass.this, checkVisitClass.class);
                     checkVisitors.putExtra("eventId", _id);
+                    checkVisitors.putExtra("eventName", _name);
                     startActivity(checkVisitors);
                 }
             });
