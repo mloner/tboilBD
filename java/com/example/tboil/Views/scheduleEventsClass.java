@@ -203,12 +203,24 @@ public class scheduleEventsClass extends AppCompatActivity implements View.OnCli
                 }
             });
 
-
-
-
-
             TextView hallName = (TextView)v.findViewById(R.id.hallName);
             hallName.setText(item.hallName);
+
+            hallName.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String hName = ((TextView) v).getText().toString();
+
+                    Intent hallInfo = new Intent(scheduleEventsClass.this, hallInfoClass.class);
+                    hallInfo.putExtra("hallName", hName);
+                    try {
+                        startActivity(hallInfo);
+                    }catch (Exception e){
+                        int f = 4;
+                    }
+                }
+            });
+
 
             TextView startDatetime = (TextView)v.findViewById(R.id.startDateTime);
             try {

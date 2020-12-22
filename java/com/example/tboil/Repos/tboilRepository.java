@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.example.tboil.DBTools.DatabaseHelper;
+import com.example.tboil.Models.HallInfoModel;
 import com.example.tboil.Models.eventVisitorsModel;
 import com.example.tboil.Models.eventsScheduleItemModel;
 
@@ -163,5 +164,78 @@ public class tboilRepository {
         db.execSQL(sql, args);
         db.close();
         return true;
+    }
+
+    public HallInfoModel getHallInfo(String hallName){
+        databaseHelper.create_db();
+        db = databaseHelper.open();
+
+        String[] args = { hallName };
+
+        String avgEvCountPerDay = "";
+        String placeInTop = "-1";
+        List<String> top5Tematics = new ArrayList<>();
+
+        try {
+            //avg events count per day
+            cursor = db.rawQuery("select AVG(evCount.cnt) as average_events_count_per_day " +
+                    "from (select " +
+                    "    strftime('%Y-%m-%d', start_datetime) startDate, " +
+                    "    COUNT(id) as cnt " +
+                    "from events_schedule " +
+                    "where events_schedule.event_hall_id = (select id from event_halls where name = ?) " +
+                    "group by startDate " +
+                    "order by cnt desc) as evCount;", args);
+            cursor.moveToFirst();
+            avgEvCountPerDay = cursor.getString(0);
+
+            //place in TOP
+            cursor = db.rawQuery("select " +
+                    "    (select event_halls.name from event_halls where event_halls.id = events_schedule.event_hall_id) as hall " +
+                    "from events_schedule " +
+                    "inner join " +
+                    "events on events.id = event_id " +
+                    "group by events_schedule.event_hall_id " +
+                    "order by count(*) desc;", null);
+            cursor.moveToFirst();
+            int i = 0;
+            while (!cursor.isAfterLast()) {
+                String _hallName = cursor.getString(0);
+                if(_hallName.equals(hallName)){
+                    placeInTop = String.valueOf(i);
+                    break;
+                }
+                i++;
+                cursor.moveToNext();
+            }
+
+            //TOP 5 tematics
+            cursor = db.rawQuery("select " +
+                    "    event_tematics.name as tematics " +
+                    "from events_schedule " +
+                    " " +
+                    "inner join " +
+                    "events on events.id = event_id " +
+                    "inner join " +
+                    "event_tematics on event_tematics.id = events.event_tematics_id " +
+                    "where events_schedule.event_hall_id = (select id from event_halls where name = ?) " +
+                    "group by events.event_tematics_id " +
+                    "order by count(*) desc " +
+                    "limit 5;", args);
+            cursor.moveToFirst();
+            while (!cursor.isAfterLast()) {
+                String temName = cursor.getString(0);
+                top5Tematics.add(temName);
+                cursor.moveToNext();
+            }
+
+        }catch (Exception ex){
+            return null;
+        }
+        cursor.close();
+        db.close();
+
+        HallInfoModel result = new HallInfoModel(avgEvCountPerDay, placeInTop, top5Tematics);
+        return result;
     }
 }

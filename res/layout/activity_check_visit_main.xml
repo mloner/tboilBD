@@ -17,7 +17,9 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="120dp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingTop="10dp"
+            android:paddingLeft="10dp">
             <Spinner
                 android:id="@+id/fios"
                 android:layout_width="match_parent"

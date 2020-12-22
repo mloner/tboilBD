@@ -38,12 +38,9 @@ public class checkVisitClass extends AppCompatActivity implements View.OnClickLi
         try {super.onCreate(savedInstanceState);
 
             setContentView(R.layout.activity_check_visit_main);
-        }catch (Exception ex){
-            int f = 123;
-        }
+        }catch (Exception ex){}
         rep = new tboilRepository();
         rep.init(getApplicationContext());
-
 
         CheckVisitTableRequest();
         fillFiosList();
@@ -82,6 +79,7 @@ public class checkVisitClass extends AppCompatActivity implements View.OnClickLi
                 android.R.layout.simple_spinner_dropdown_item, items);
         dropdown.setAdapter(adapter);
     }
+
     public void CheckVisitTableRequest(){
         table = findViewById(R.id.table);
         //remove rows
